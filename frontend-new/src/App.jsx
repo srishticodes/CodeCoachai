@@ -1,43 +1,55 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import CodeEditor from './components/CodeEditor';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { InterviewProvider } from './context/InterviewContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Dashboard from './components/Dashboard';
+import CodingInterface from './components/CodingInterface';
+import QuestionList from './components/QuestionList';
+import LandingPage from './components/LandingPage';
 
-const App = () => {
+function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-        {/* Header */}
-        <header className="bg-white dark:bg-gray-800 shadow">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Code Coach
-            </h1>
-          </div>
-        </header>
+      <AuthProvider>
+        <InterviewProvider>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-        {/* Main content */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="h-[calc(100vh-12rem)] bg-white dark:bg-gray-800 rounded-lg shadow">
-            <Routes>
-              <Route path="/" element={<CodeEditor />} />
-            </Routes>
-      </div>
-        </main>
-
-        {/* Toast notifications */}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#333',
-              color: '#fff',
-            },
-          }}
-        />
-      </div>
+            {/* Protected routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions"
+              element={
+                <ProtectedRoute>
+                  <QuestionList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/practice/:questionId"
+              element={
+                <ProtectedRoute>
+                  <CodingInterface />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </InterviewProvider>
+      </AuthProvider>
     </Router>
   );
-};
+}
 
 export default App;

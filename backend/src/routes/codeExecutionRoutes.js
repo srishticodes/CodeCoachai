@@ -1,46 +1,89 @@
 import express from 'express';
-import { executeCode, getQuestions, getQuestion } from '../services/codeExecutionService.js';
+import { protect } from '../middleware/auth.js';
+import { executeCode } from '../services/codeExecution.js';
+import { createError } from '../utils/error.js';
 
 const router = express.Router();
 
-// Get available questions for a language and difficulty
-router.get('/questions/:language/:difficulty', async (req, res, next) => {
-  try {
-    const { language, difficulty } = req.params;
-    const questions = await getQuestions(language, difficulty);
-    res.json(questions);
-  } catch (error) {
-    next(error);
-  }
-});
+// All routes require authentication
+router.use(protect);
 
-// Get a specific question
-router.get('/questions/:language/:difficulty/:questionId', async (req, res, next) => {
-  try {
-    const { language, difficulty, questionId } = req.params;
-    const question = await getQuestion(language, parseInt(questionId), difficulty);
-    res.json(question);
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Execute code for a specific question
+// Execute code with test cases
 router.post('/execute', async (req, res, next) => {
   try {
-    const { code, language, questionId, difficulty } = req.body;
-    
-    if (!code || !language || !questionId || !difficulty) {
-      return res.status(400).json({
-        message: 'Missing required fields: code, language, questionId, and difficulty are required'
-      });
+    const { code, language, testCases } = req.body;
+
+    // Validate required fields
+    if (!code || !language || !testCases) {
+      return next(createError(400, 'Missing required fields: code, language, and testCases'));
     }
 
-    const result = await executeCode(code, language, parseInt(questionId), difficulty);
-    res.json(result);
+    // Validate test cases format
+    if (!Array.isArray(testCases) || testCases.length === 0) {
+      return next(createError(400, 'testCases must be a non-empty array'));
+    }
+
+    // Validate each test case
+    for (const testCase of testCases) {
+      if (!testCase.input || testCase.expectedOutput === undefined) {
+        return next(createError(400, 'Each test case must have input and expectedOutput'));
+      }
+    }
+
+    // Execute the code
+    const results = await executeCode(code, language, testCases);
+
+    // Calculate summary
+    const summary = {
+      total: testCases.length,
+      passed: results.filter(r => r.passed).length,
+      failed: results.filter(r => !r.passed).length,
+      executionTime: Date.now() - req._startTime // Add execution time tracking
+    };
+
+    res.json({
+      results,
+      summary
+    });
   } catch (error) {
     next(error);
   }
+});
+
+// Get supported languages
+router.get('/languages', (req, res) => {
+  const supportedLanguages = [
+    {
+      id: 'javascript',
+      name: 'JavaScript',
+      version: 'Node.js',
+      extension: '.js',
+      requirements: ['Node.js']
+    },
+    {
+      id: 'python',
+      name: 'Python',
+      version: '3.x',
+      extension: '.py',
+      requirements: ['Python 3.x']
+    },
+    {
+      id: 'java',
+      name: 'Java',
+      version: 'JDK 11+',
+      extension: '.java',
+      requirements: ['Java JDK 11+', 'Google Gson Library']
+    },
+    {
+      id: 'cpp',
+      name: 'C++',
+      version: 'C++17',
+      extension: '.cpp',
+      requirements: ['G++ Compiler', 'nlohmann/json Library']
+    }
+  ];
+
+  res.json({ languages: supportedLanguages });
 });
 
 export default router; 

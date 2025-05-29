@@ -2,98 +2,76 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Create axios instance with default config
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   }
 });
 
-// Get available questions for a language and difficulty
-export const getQuestions = async (language, difficulty) => {
-  try {
-    const response = await api.get(`/code/questions/${language}/${difficulty}`);
+// Add token to requests if it exists
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Interview API endpoints
+export const interviewApi = {
+  // Question management
+  generateQuestion: async (data) => {
+    const response = await api.post('/interview/questions/generate', data);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching questions:', error);
-    throw new Error(error.response?.data?.message || 'Failed to fetch questions');
-  }
-};
+  },
 
-// Get a specific question
-export const getQuestion = async (language, questionId, difficulty) => {
-  try {
-    const response = await api.get(`/code/questions/${language}/${difficulty}/${questionId}`);
+  getQuestions: async (params) => {
+    const response = await api.get('/interview/questions', { params });
     return response.data;
-  } catch (error) {
-    console.error('Error fetching question:', error);
-    throw new Error(error.response?.data?.message || 'Failed to fetch question');
-  }
-};
+  },
 
-// Execute code for a specific question
-export const executeCode = async (code, language, questionId, difficulty) => {
-  try {
-    const response = await api.post('/code/execute', {
-      code,
-      language,
-      questionId,
-      difficulty
-    });
+  // Solution submission and evaluation
+  submitSolution: async (data) => {
+    const response = await api.post('/interview/solutions/submit', data);
     return response.data;
-  } catch (error) {
-    console.error('Error executing code:', error);
-    throw new Error(error.response?.data?.message || 'Failed to execute code');
+  },
+
+  // Hints and solutions
+  getHint: async (questionId) => {
+    const response = await api.get(`/interview/questions/${questionId}/hint`);
+    return response.data;
+  },
+
+  getSolution: async (questionId) => {
+    const response = await api.get(`/interview/questions/${questionId}/solution`);
+    return response.data;
+  },
+
+  // User progress
+  getUserProgress: async (params) => {
+    const response = await api.get('/interview/progress', { params });
+    return response.data;
   }
 };
 
-export const getLanguageTemplate = async (language) => {
-  try {
-    const response = await api.get(`/code/template/${language}`);
-    return response.data.template;
-  } catch (error) {
-    console.error('Error getting language template:', error);
-    throw new Error(error.response?.data?.error || 'Failed to get language template');
+// Auth API endpoints
+export const authApi = {
+  login: async (credentials) => {
+    const response = await api.post('/auth/login', credentials);
+    return response.data;
+  },
+
+  register: async (userData) => {
+    const response = await api.post('/auth/register', userData);
+    return response.data;
+  },
+
+  getCurrentUser: async () => {
+    const response = await api.get('/auth/me');
+    return response.data;
   }
 };
 
-export const getCodeFeedback = async (code, language, question, testResults) => {
-  try {
-    const response = await api.post('/ai/feedback', {
-      code,
-      language,
-      question,
-      testResults,
-    });
-    return {
-      feedback: response.data.feedback,
-      error: null
-    };
-  } catch (error) {
-    console.error('Error getting AI feedback:', error);
-    return {
-      feedback: null,
-      error: error.response?.data?.error || 'Failed to get AI feedback'
-    };
-  }
-};
-
-export const getCodeExplanation = async (code, language, question) => {
-  try {
-    const response = await api.post('/ai/explanation', {
-      code,
-      language,
-      question,
-    });
-    return {
-      explanation: response.data.explanation,
-      error: null
-    };
-  } catch (error) {
-    console.error('Error getting code explanation:', error);
-    return {
-      explanation: null,
-      error: error.response?.data?.error || 'Failed to get code explanation'
-    };
-  }
-}; 
+export default api; 
