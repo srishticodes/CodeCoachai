@@ -1,43 +1,102 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import CodeEditor from './components/CodeEditor';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { InterviewProvider } from './context/InterviewContext';
+import { useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import Layout from './components/Layout';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Dashboard from './components/Dashboard';
+import CodingInterface from './components/CodingInterface';
+import QuestionList from './components/QuestionList';
+import LandingPage from './components/LandingPage';
 
-const App = () => {
+// Component to handle public route protection
+function PublicRoute({ children }) {
+  const { user } = useAuth();
+  return user ? <Navigate to="/dashboard" replace /> : children;
+}
+
+function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-        {/* Header */}
-        <header className="bg-white dark:bg-gray-800 shadow">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Code Coach
-            </h1>
-          </div>
-        </header>
+      <AuthProvider>
+        <InterviewProvider>
+          <Routes>
+            {/* Public routes with protection */}
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <LandingPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Layout>
+                    <Login />
+                  </Layout>
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  <Layout>
+                    <Register />
+                  </Layout>
+                </PublicRoute>
+              }
+            />
 
-        {/* Main content */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="h-[calc(100vh-12rem)] bg-white dark:bg-gray-800 rounded-lg shadow">
-            <Routes>
-              <Route path="/" element={<CodeEditor />} />
-            </Routes>
-      </div>
-        </main>
+            {/* Protected routes */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Dashboard />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/questions"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <QuestionList />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/practice/:questionId"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <CodingInterface />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
 
-        {/* Toast notifications */}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#333',
-              color: '#fff',
-            },
-          }}
-        />
-      </div>
+            {/* Catch all route - redirect to dashboard if authenticated, landing page if not */}
+            <Route
+              path="*"
+              element={
+                <Navigate to="/" replace />
+              }
+            />
+          </Routes>
+        </InterviewProvider>
+      </AuthProvider>
     </Router>
   );
-};
+}
 
 export default App;
