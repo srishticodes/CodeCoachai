@@ -102,6 +102,7 @@ export const getCurrentUserHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+<<<<<<< HEAD
 };
 
 // Update user profile
@@ -147,4 +148,6 @@ export const updateProfileHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+=======
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
 }; 

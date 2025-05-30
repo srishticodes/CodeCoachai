@@ -41,7 +41,11 @@ const questionSchema = new mongoose.Schema({
   },
   createdBy: {
     type: String,
+<<<<<<< HEAD
     default: 'gemini-ai'
+=======
+    default: 'mistral-ai'
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
   },
   isActive: {
     type: Boolean,

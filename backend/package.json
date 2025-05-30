@@ -10,8 +10,11 @@
     "test": "jest"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@google/genai": "^1.2.0",
     "@google/generative-ai": "^0.3.0",
+=======
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
     "axios": "^1.9.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -23,9 +26,13 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "morgan": "^1.10.0",
+<<<<<<< HEAD
     "openai": "^4.103.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+=======
+    "uuid": "^9.0.1",
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
     "validator": "^13.15.15"
   },
   "devDependencies": {

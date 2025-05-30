@@ -121,7 +121,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+<<<<<<< HEAD
              <span className="block">CodeCoach.ai</span>
+=======
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
               <span className="block">Master Your Coding</span>
               <span className="block text-indigo-600">Interview Skills</span>
             </h1>

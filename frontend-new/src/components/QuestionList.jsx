@@ -155,7 +155,11 @@ export default function QuestionList() {
                 </div>
               </div>
               <button
+<<<<<<< HEAD
                 onClick={() => navigate(`/practice/${question._id}`, { state: { question } })}
+=======
+                onClick={() => {/* Handle start question */}}
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Start Question

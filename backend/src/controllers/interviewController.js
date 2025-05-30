@@ -1,8 +1,14 @@
 import { createError } from '../utils/error.js';
+<<<<<<< HEAD
 import { generateQuestion, evaluateSolution, generateHint, generateSolutionExplanation } from '../services/geminiService.js';
 import Question from '../models/Question.js';
 import UserProgress from '../models/UserProgress.js';
 import User from '../models/User.js';
+=======
+import { generateQuestion, evaluateSolution, generateHint, generateSolutionExplanation } from '../services/mistralService.js';
+import Question from '../models/Question.js';
+import UserProgress from '../models/UserProgress.js';
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
 
 // Generate a new question
 export const generateQuestionHandler = async (req, res, next) => {
@@ -48,6 +54,7 @@ export const getQuestionsHandler = async (req, res, next) => {
   }
 };
 
+<<<<<<< HEAD
 // Helper function to calculate question score
 const calculateQuestionScore = (userProgress) => {
   // Base score is 100
@@ -85,10 +92,20 @@ export const submitSolutionHandler = async (req, res, next) => {
 
     if (!questionId || !code || !language) {
       console.log('Missing required fields:', { questionId, code: !!code, language });
+=======
+// Submit solution for evaluation
+export const submitSolutionHandler = async (req, res, next) => {
+  try {
+    const { questionId, code, language } = req.body;
+    const userId = req.user.id; // Assuming auth middleware sets req.user
+
+    if (!questionId || !code || !language) {
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
       return next(createError(400, 'Missing required fields: questionId, code, and language'));
     }
 
     // Evaluate the solution
+<<<<<<< HEAD
     console.log('Evaluating solution...');
     const evaluation = await evaluateSolution(code, language, questionId);
     console.log('Evaluation result:', {
@@ -243,6 +260,39 @@ export const submitSolutionHandler = async (req, res, next) => {
     }
 
     console.log('Sending response...');
+=======
+    const evaluation = await evaluateSolution(code, language, questionId);
+
+    // Update user progress
+    let userProgress = await UserProgress.findOne({ userId, questionId });
+    if (!userProgress) {
+      userProgress = new UserProgress({ userId, questionId });
+    }
+
+    // Add attempt
+    userProgress.attempts.push({
+      code,
+      language,
+      testResults: evaluation.testResults || [],
+      aiFeedback: {
+        feedback: evaluation.feedback,
+        hints: evaluation.hints || [],
+        solution: evaluation.solution
+      }
+    });
+
+    // Update status
+    if (evaluation.isCorrect) {
+      userProgress.status = 'solved';
+      userProgress.solvedAt = new Date();
+    } else {
+      userProgress.status = 'attempted';
+    }
+
+    userProgress.lastAttemptAt = new Date();
+    await userProgress.save();
+
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
     res.json({
       evaluation,
       progress: {
@@ -252,12 +302,15 @@ export const submitSolutionHandler = async (req, res, next) => {
       }
     });
   } catch (error) {
+<<<<<<< HEAD
     console.error('Submit solution error:', {
       name: error.name,
       message: error.message,
       stack: error.stack,
       code: error.code
     });
+=======
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
     next(error);
   }
 };
@@ -268,6 +321,7 @@ export const getHintHandler = async (req, res, next) => {
     const { questionId } = req.params;
     const userId = req.user.id;
 
+<<<<<<< HEAD
     console.log('Getting hint for question:', { questionId, userId });
 
     // Create user progress if it doesn't exist
@@ -292,6 +346,15 @@ export const getHintHandler = async (req, res, next) => {
       console.error('Invalid hint data:', hintData);
       throw createError(500, 'Failed to generate valid hint');
     }
+=======
+    const userProgress = await UserProgress.findOne({ userId, questionId });
+    if (!userProgress) {
+      return next(createError(404, 'Question progress not found'));
+    }
+
+    const hintLevel = userProgress.hintsUsed.length + 1;
+    const hint = await generateHint(questionId, hintLevel);
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
 
     // Record hint usage
     userProgress.hintsUsed.push({
@@ -299,6 +362,7 @@ export const getHintHandler = async (req, res, next) => {
       usedAt: new Date()
     });
     await userProgress.save();
+<<<<<<< HEAD
     console.log('Hint usage recorded');
 
     // Return just the hint text as expected by the frontend
@@ -307,6 +371,11 @@ export const getHintHandler = async (req, res, next) => {
     res.json(response);
   } catch (error) {
     console.error('Error in getHintHandler:', error);
+=======
+
+    res.json({ hint, hintLevel });
+  } catch (error) {
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
     next(error);
   }
 };
@@ -317,6 +386,7 @@ export const getSolutionHandler = async (req, res, next) => {
     const { questionId } = req.params;
     const userId = req.user.id;
 
+<<<<<<< HEAD
     console.log('Getting solution for question:', { questionId, userId });
 
     // Create user progress if it doesn't exist
@@ -350,12 +420,21 @@ export const getSolutionHandler = async (req, res, next) => {
     }
 
     console.log('Solution data validated successfully');
+=======
+    const userProgress = await UserProgress.findOne({ userId, questionId });
+    if (!userProgress) {
+      return next(createError(404, 'Question progress not found'));
+    }
+
+    const explanation = await generateSolutionExplanation(questionId);
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
 
     // Record solution view
     userProgress.solutionViewed = true;
     userProgress.solutionViewedAt = new Date();
     userProgress.status = 'gave_up';
     await userProgress.save();
+<<<<<<< HEAD
     console.log('Solution view recorded');
 
     // Return the structured explanation object
@@ -364,6 +443,11 @@ export const getSolutionHandler = async (req, res, next) => {
     res.json(response);
   } catch (error) {
     console.error('Error in getSolutionHandler:', error);
+=======
+
+    res.json({ explanation });
+  } catch (error) {
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
     next(error);
   }
 };
@@ -394,6 +478,7 @@ export const getUserProgressHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+<<<<<<< HEAD
 };
 
 // Get total count of active questions
@@ -404,4 +489,6 @@ export const getTotalQuestionsHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+=======
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
 }; 

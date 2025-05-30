@@ -6,8 +6,12 @@ import {
   submitSolutionHandler,
   getHintHandler,
   getSolutionHandler,
+<<<<<<< HEAD
   getUserProgressHandler,
   getTotalQuestionsHandler
+=======
+  getUserProgressHandler
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
 } from '../controllers/interviewController.js';
 
 const router = express.Router();
@@ -29,7 +33,10 @@ router.get('/questions/:questionId/solution', getSolutionHandler);
 // User progress
 router.get('/progress', getUserProgressHandler);
 
+<<<<<<< HEAD
 // Get total questions count
 router.get('/questions/total', getTotalQuestionsHandler);
 
+=======
+>>>>>>> 82da84531dece80fe44a4b084f560ccb0ce34807
 export default router; 
