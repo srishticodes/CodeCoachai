@@ -1,0 +1,36 @@
+{
+  "name": "ai-interview-coach-backend",
+  "version": "1.0.0",
+  "description": "Backend for AI Interview Coach application",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@google/genai": "^1.2.0",
+    "@google/generative-ai": "^0.3.0",
+    "axios": "^1.9.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
+    "express-session": "^1.18.1",
+    "google-auth-library": "^9.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.1",
+    "morgan": "^1.10.0",
+    "openai": "^4.103.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "validator": "^13.15.15"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^6.3.3"
+  }
+}

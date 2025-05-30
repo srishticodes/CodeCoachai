@@ -1,0 +1,105 @@
+# Dependencies
+node_modules/
+/frontend-new/node_modules/
+/backend/node_modules/
+/.pnp
+.pnp.js
+
+# Environment files
+/backend/.env
+/backend/.env.local
+/backend/.env.development.local
+/backend/.env.test.local
+/backend/.env.production.local
+/backend/.env*.local
+
+# Testing
+/coverage
+.nyc_output
+/backend/coverage
+/backend/.nyc_output
+
+# Production build
+/build
+/dist
+/frontend-new/build
+/frontend-new/dist
+/backend/build
+/backend/dist
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+/backend/logs
+/frontend-new/logs
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Optional npm cache directory
+.npm
+/backend/.npm
+/frontend-new/.npm
+
+# Optional eslint cache
+.eslintcache
+/backend/.eslintcache
+/frontend-new/.eslintcache
+
+# Optional REPL history
+.node_repl_history
+/backend/.node_repl_history
+/frontend-new/.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+/backend/*.tgz
+/frontend-new/*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+/backend/.yarn-integrity
+/frontend-new/.yarn-integrity
+
+# Misc
+.DS_Store
+Thumbs.db
+*.pem
+.cache
+.parcel-cache
+/backend/.cache
+/frontend-new/.cache
+/backend/.parcel-cache
+/frontend-new/.parcel-cache
+
+# Debug
+.debug/
+/backend/.debug/
+/frontend-new/.debug/
+
+# Local Netlify folder
+.netlify
+/frontend-new/.netlify
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+/backend/*.tsbuildinfo
+/frontend-new/*.tsbuildinfo
+/backend/next-env.d.ts
+/frontend-new/next-env.d.ts
+
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map 
