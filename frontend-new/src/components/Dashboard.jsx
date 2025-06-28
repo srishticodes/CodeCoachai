@@ -133,7 +133,7 @@ export default function Dashboard() {
   console.log('Rendering dashboard content');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50 to-secondary-50 dark:from-neutral-950 dark:via-primary-950 dark:to-secondary-950">
       <div className="container-modern py-8">
         {/* Header */}
         <motion.div
@@ -142,10 +142,10 @@ export default function Dashboard() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
             Welcome back, <span className="gradient-text">{user?.name || 'Developer'}!</span>
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400">
+          <p className="text-lg text-neutral-600 dark:text-neutral-400">
             Ready to continue your coding journey? Let's practice some algorithms!
           </p>
         </motion.div>
@@ -155,13 +155,13 @@ export default function Dashboard() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 glass-card p-4 border-l-4 border-red-500"
+            className="mb-6 glass-card p-4 border-l-4 border-error-500"
           >
             <div className="flex items-center">
-              <svg className="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-error-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="text-red-700 dark:text-red-400">{error}</p>
+              <p className="text-error-700 dark:text-error-400">{error}</p>
             </div>
           </motion.div>
         )}
@@ -176,21 +176,21 @@ export default function Dashboard() {
           <Card className="text-center">
             <CardContent>
               <div className="text-3xl font-bold gradient-text mb-2">{stats.totalQuestions}</div>
-              <div className="text-slate-600 dark:text-slate-400">Total Questions</div>
+              <div className="text-neutral-600 dark:text-neutral-400">Total Questions</div>
             </CardContent>
           </Card>
 
           <Card className="text-center">
             <CardContent>
               <div className="text-3xl font-bold gradient-text mb-2">{stats.completedQuestions}</div>
-              <div className="text-slate-600 dark:text-slate-400">Completed Questions</div>
+              <div className="text-neutral-600 dark:text-neutral-400">Completed Questions</div>
             </CardContent>
           </Card>
 
           <Card className="text-center">
             <CardContent>
               <div className="text-3xl font-bold gradient-text mb-2">{stats.averageScore}%</div>
-              <div className="text-slate-600 dark:text-slate-400">Average Score</div>
+              <div className="text-neutral-600 dark:text-neutral-400">Average Score</div>
             </CardContent>
           </Card>
         </motion.div>

@@ -6,6 +6,43 @@ CodeCoach.ai is an intelligent learning platform designed to help developers mas
 
 CodeCoach.ai combines the power of Google's Gemini AI with a modern web interface to create an interactive coding practice environment. Whether you're preparing for your first technical interview or looking to sharpen your algorithmic skills, CodeCoach.ai provides the tools and guidance you need to succeed.
 
+## 🎯 How CodeCoach.ai Works
+
+### 1. **Landing Page Experience**
+- **New Users**: Visit the homepage to see the platform introduction, features, and statistics
+- **Returning Users**: After signing in, you can still access the main introduction page via the "Home" link in the navigation
+- **Welcome Page**: Authenticated users can access a personalized welcome page at `/welcome`
+
+### 2. **User Authentication**
+- **Sign Up**: Create an account using email/password or Google OAuth
+- **Sign In**: Access your personalized dashboard and practice history
+- **Profile Management**: Update your preferences and view your progress
+
+### 3. **Practice Workflow**
+
+#### **Getting Started**
+1. **Navigate to Practice**: Click "Practice" in the navigation or "Start Practicing" button
+2. **Choose Preferences**: Select your preferred programming language and difficulty level
+3. **Get Questions**: AI generates personalized coding challenges based on your settings
+
+#### **Coding Session**
+1. **Read the Problem**: Understand the problem statement and requirements
+2. **Write Your Solution**: Use the integrated Monaco code editor with syntax highlighting
+3. **Test Your Code**: Run your solution against multiple test cases
+4. **Get Instant Feedback**: Receive detailed feedback on correctness and performance
+
+#### **Learning & Improvement**
+1. **Access Hints**: Get progressive hints when you're stuck (without spoiling the solution)
+2. **View Solutions**: See optimal approaches with step-by-step explanations
+3. **Performance Analysis**: Understand time and space complexity of your solutions
+4. **Track Progress**: Monitor your improvement across different problem categories
+
+### 4. **Dashboard & Progress**
+- **Overview**: View your practice statistics, recent activity, and achievements
+- **Progress Tracking**: Monitor your success rate, average solve time, and areas for improvement
+- **Practice History**: Review your past attempts and solutions
+- **Performance Metrics**: Track improvement across different categories and difficulty levels
+
 ## ✨ Key Features
 
 ### 🤖 AI-Generated Questions
@@ -32,7 +69,7 @@ CodeCoach.ai combines the power of Google's Gemini AI with a modern web interfac
 - **Practice History**: Review your past attempts and solutions
 - **Customizable Settings**: Adjust difficulty, language, and category preferences
 
-## 🏗️ Architecture
+## 🏗️ Technical Architecture
 
 ### Frontend (React + Vite)
 - **Modern UI**: Built with React and styled with Tailwind CSS
@@ -51,15 +88,6 @@ CodeCoach.ai combines the power of Google's Gemini AI with a modern web interfac
 - **Solution Evaluation**: Intelligent assessment of code correctness and efficiency
 - **Hint System**: Progressive hints that guide without giving away solutions
 - **Explanation Engine**: Detailed breakdowns of optimal solutions and approaches
-
-## 🎮 How It Works
-
-1. **Start Practicing**: Choose your preferred language and difficulty level
-2. **Get Questions**: AI generates personalized coding challenges based on your preferences
-3. **Code & Test**: Write your solution in the integrated code editor and run test cases
-4. **Get Feedback**: Receive instant feedback on correctness, performance, and optimization
-5. **Learn & Improve**: Access hints, solutions, and detailed explanations to enhance your skills
-6. **Track Progress**: Monitor your improvement across different problem categories
 
 ## 🛠️ Technology Stack
 
@@ -104,7 +132,7 @@ coach/
 └── README.md
 ```
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -116,8 +144,8 @@ coach/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd coach
+   git clone https://github.com/srishticodes/CodeCoachai.git
+   cd CodeCoachai
    ```
 
 2. **Backend Setup**
@@ -138,5 +166,7 @@ coach/
 4. **Access the application**
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:5000
+
+
 
 

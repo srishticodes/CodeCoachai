@@ -50,7 +50,7 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-white/20 dark:border-slate-700/50 shadow-soft' 
+        ? 'bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md border-b border-white/20 dark:border-neutral-700/50 shadow-soft' 
         : 'bg-transparent'
     }`}>
       <div className="container-modern">
@@ -119,13 +119,13 @@ export default function Navbar() {
                       {user.name.charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                     {user.name}
                   </span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="btn-ghost text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  className="btn-ghost text-error-600 dark:text-error-400 hover:bg-error-50 dark:hover:bg-error-900/20"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -147,14 +147,14 @@ export default function Navbar() {
             {/* Mobile menu button */}
             <div className="md:hidden" ref={mobileMenuRef}>
               <button
-                className="p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/20 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 transition-all duration-200"
+                className="p-2 rounded-lg bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm border border-white/20 dark:border-neutral-700/50 hover:bg-white dark:hover:bg-neutral-800 transition-all duration-200"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle mobile menu"
               >
                 <div className="w-5 h-5 flex flex-col justify-center items-center space-y-1">
-                  <span className={`block w-4 h-0.5 bg-slate-600 dark:bg-slate-300 transition-all duration-200 ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-                  <span className={`block w-4 h-0.5 bg-slate-600 dark:bg-slate-300 transition-all duration-200 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
-                  <span className={`block w-4 h-0.5 bg-slate-600 dark:bg-slate-300 transition-all duration-200 ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+                  <span className={`block w-4 h-0.5 bg-neutral-600 dark:bg-neutral-300 transition-all duration-200 ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+                  <span className={`block w-4 h-0.5 bg-neutral-600 dark:bg-neutral-300 transition-all duration-200 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
+                  <span className={`block w-4 h-0.5 bg-neutral-600 dark:bg-neutral-300 transition-all duration-200 ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
                 </div>
               </button>
 
@@ -164,21 +164,21 @@ export default function Navbar() {
                   <div className="p-4 space-y-4">
                     {user ? (
                       <>
-                        <div className="flex items-center space-x-3 pb-3 border-b border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center space-x-3 pb-3 border-b border-neutral-200 dark:border-neutral-700">
                           <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center">
                             <span className="text-sm font-semibold text-white">
                               {user.name.charAt(0).toUpperCase()}
                             </span>
                           </div>
                           <div>
-                            <div className="font-medium text-slate-900 dark:text-slate-100">{user.name}</div>
-                            <div className="text-sm text-slate-500 dark:text-slate-400">{user.email}</div>
+                            <div className="font-medium text-neutral-900 dark:text-neutral-100">{user.name}</div>
+                            <div className="text-sm text-neutral-500 dark:text-neutral-400">{user.email}</div>
                           </div>
                         </div>
                         
                         <Link
                           to="/"
-                          className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
+                          className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors duration-200"
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,7 +189,7 @@ export default function Navbar() {
                         
                         <Link
                           to="/dashboard"
-                          className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
+                          className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors duration-200"
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,7 +201,7 @@ export default function Navbar() {
                         
                         <Link
                           to="/questions"
-                          className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200"
+                          className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors duration-200"
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,12 +210,12 @@ export default function Navbar() {
                           <span>Practice</span>
                         </Link>
                         
-                        <div className="border-t border-slate-200 dark:border-slate-700 pt-3">
+                        <div className="border-t border-neutral-200 dark:border-neutral-700 pt-3">
                           <button
                             onClick={handleProfileSettings}
-                            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 w-full text-left"
+                            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors duration-200 w-full text-left"
                           >
-                            <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             <span>Profile Settings</span>
@@ -223,7 +223,7 @@ export default function Navbar() {
                           
                           <button
                             onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
-                            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200 text-red-600 dark:text-red-400 w-full text-left"
+                            className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-error-50 dark:hover:bg-error-900/20 transition-colors duration-200 text-error-600 dark:text-error-400 w-full text-left"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

@@ -22,12 +22,12 @@ function PublicRoute({ children }) {
 // Component for the main introduction page (always shows intro content)
 function MainLandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50 to-secondary-50 dark:from-neutral-950 dark:via-primary-950 dark:to-secondary-950 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-bounce-gentle"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-bounce-gentle" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-40 left-40 w-60 h-60 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-bounce-gentle" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-300/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-bounce-gentle"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-300/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-bounce-gentle" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-40 left-40 w-60 h-60 bg-accent-300/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-bounce-gentle" style={{ animationDelay: '2s' }}></div>
       </div>
 
       {/* Use main Navbar */}
@@ -43,11 +43,11 @@ function MainLandingPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+              <h1 className="text-5xl md:text-7xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
                 <span className="block">Master Your</span>
                 <span className="block gradient-text">Coding Skills</span>
               </h1>
-              <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl md:text-2xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed">
                 Practice with AI-powered coding questions, get instant feedback, and improve your problem-solving skills with personalized guidance.
               </p>
             </div>
@@ -65,18 +65,14 @@ function MainLandingPage() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="stats-card">
-                <div className="text-3xl font-bold gradient-text mb-2">10K+</div>
-                <div className="text-slate-600 dark:text-slate-400">Active Learners</div>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
               <div className="stats-card">
                 <div className="text-3xl font-bold gradient-text mb-2">500+</div>
-                <div className="text-slate-600 dark:text-slate-400">AI Questions</div>
+                <div className="text-neutral-600 dark:text-neutral-400">AI Questions</div>
               </div>
               <div className="stats-card">
                 <div className="text-3xl font-bold gradient-text mb-2">95%</div>
-                <div className="text-slate-600 dark:text-slate-400">Success Rate</div>
+                <div className="text-neutral-600 dark:text-neutral-400">Success Rate</div>
               </div>
             </div>
           </div>
@@ -86,10 +82,10 @@ function MainLandingPage() {
       {/* Features Section */}
       <div className="relative z-10 container-modern py-20">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
             Why Choose <span className="gradient-text">CodeCoach.ai</span>?
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
             Our AI-powered platform provides personalized learning experiences to help you master coding interviews.
           </p>
         </div>
@@ -101,8 +97,8 @@ function MainLandingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">AI-Powered Questions</h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">AI-Powered Questions</h3>
+            <p className="text-neutral-600 dark:text-neutral-400">
               Practice with intelligent questions that adapt to your skill level and provide personalized feedback.
             </p>
           </div>
@@ -113,8 +109,8 @@ function MainLandingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">Instant Feedback</h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Instant Feedback</h3>
+            <p className="text-neutral-600 dark:text-neutral-400">
               Get real-time feedback on your solutions with detailed explanations and optimization suggestions.
             </p>
           </div>
@@ -125,8 +121,8 @@ function MainLandingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">Progress Tracking</h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">Progress Tracking</h3>
+            <p className="text-neutral-600 dark:text-neutral-400">
               Monitor your progress with detailed analytics and track your improvement over time.
             </p>
           </div>
@@ -137,10 +133,10 @@ function MainLandingPage() {
       <div className="relative z-10 container-modern py-20">
         <div className="text-center">
           <div className="glass-card p-12 max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
               Ready to Start Your Coding Journey?
             </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-neutral-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
               Join thousands of developers who are already improving their skills with CodeCoach.ai
             </p>
             <Link to="/register" className="btn-primary text-lg px-8 py-4">
