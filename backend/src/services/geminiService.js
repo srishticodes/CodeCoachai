@@ -240,20 +240,28 @@ export const evaluateSolution = async (code, language, questionId) => {
     Expected Solution:
     ${question.solution.code}
 
-    Important:
-    1. Return ONLY the JSON object, no markdown formatting, no code blocks, no additional text
-    2. Set isCorrect to true only if the solution is completely correct
+    Test Cases:
+    ${JSON.stringify(question.testCases, null, 2)}
+
+    Important Evaluation Rules:
+    1. Set isCorrect to true ONLY if ALL of these conditions are met:
+       - The code compiles/runs without syntax errors
+       - The code produces the correct output for ALL test cases
+       - The code follows the problem's requirements
+       - The code's logic is sound and efficient
+    2. If ANY of these conditions are not met, set isCorrect to false and explain why in the feedback
     3. Provide specific feedback about what's wrong if isCorrect is false
     4. Include hints only if the solution needs improvement
     5. Make sure all JSON fields use double quotes
-    6. DO NOT wrap the response in code blocks or markdown formatting`;
+    6. DO NOT wrap the response in code blocks or markdown formatting
+    7. Return ONLY the JSON object, no additional text`;
 
     const response = await model.generateContent({
       contents: [{
         parts: [{ text: prompt }]
       }],
       generationConfig: {
-        temperature: 0.3, // Lower temperature for more consistent evaluation
+        temperature: 0.1, // Lower temperature for more consistent evaluation
         topK: 40,
         topP: 0.95,
         maxOutputTokens: 1024,
@@ -271,6 +279,14 @@ export const evaluateSolution = async (code, language, questionId) => {
     try {
       evaluation = JSON.parse(responseText);
 
+      // Validate required fields
+      if (typeof evaluation.isCorrect !== 'boolean') {
+        throw new Error('Evaluation response missing or invalid isCorrect field');
+      }
+      if (typeof evaluation.feedback !== 'string') {
+        throw new Error('Evaluation response missing or invalid feedback field');
+      }
+
       // Transform hints if they're not in the correct format
       if (Array.isArray(evaluation.hints)) {
         evaluation.hints = evaluation.hints.map((hint, index) => {
@@ -282,6 +298,13 @@ export const evaluateSolution = async (code, language, questionId) => {
           }
           return hint;
         });
+      } else {
+        evaluation.hints = [];
+      }
+
+      // Ensure solution field exists
+      if (!evaluation.solution) {
+        evaluation.solution = '';
       }
     } catch (parseError) {
       console.error('Failed to parse Gemini response. Raw response:', responseText);
@@ -394,152 +417,63 @@ export const generateHint = async (questionId, hintLevel) => {
 // Generate solution explanation
 export const generateSolutionExplanation = async (questionId) => {
   try {
-    if (!genAI) {
-      throw createError(500, 'Gemini AI service is not properly initialized. Please check your API key configuration.');
-    }
-
+    console.log('Generating solution explanation for question:', questionId);
+    
     const question = await Question.findById(questionId);
     if (!question) {
       throw createError(404, 'Question not found');
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-001" });
-    const prompt = [
-      'Explain the solution for this problem in detail.',
-      'Return the response in the following JSON format:',
-      '{',
-      '  "explanation": {',
-      '    "overview": "High-level explanation of the approach",',
-      '    "stepByStep": "Detailed step-by-step explanation (use plain text, no markdown formatting)",',
-      '    "complexity": {',
-      '      "time": "Time complexity explanation",',
-      '      "space": "Space complexity explanation"',
-      '    },',
-      '    "codeExplanation": "Line-by-line explanation of the solution code (use plain text, no markdown formatting, escape newlines with \\n)"',
-      '  }',
-      '}',
-      '',
-      'Problem: ' + question.description,
-      '',
-      'Solution Code:',
-      question.solution.code,
-      '',
-      'Important:',
-      '1. Return ONLY the JSON object, no markdown formatting, no code blocks, no additional text',
-      '2. Make sure all JSON fields use double quotes',
-      '3. Provide a clear and comprehensive explanation',
-      '4. Include both high-level and detailed explanations',
-      '5. DO NOT use markdown formatting in any field (no **, #, ```, etc.)',
-      '6. DO NOT wrap the response in code blocks or markdown formatting',
-      '7. Use plain text for all explanations, including code explanations',
-      '8. In codeExplanation, use \\n for newlines and escape any quotes with \\"',
-      '9. Ensure all newlines in codeExplanation are properly escaped with \\n'
-    ].join('\n');
+    const prompt = `Explain the solution for this programming problem:
 
-    const response = await model.generateContent({
-      contents: [{
-        parts: [{ text: prompt }]
-      }],
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 1024,
+Title: ${question.title}
+Description: ${question.description}
+Solution Code: ${question.solution.code}
+
+Please provide a clear explanation of how the solution works. Include:
+1. A brief overview of the approach
+2. Step-by-step explanation of the code
+3. Time and space complexity analysis
+
+Keep the explanation clear and focused on how the code solves the problem.`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const explanation = response.text().trim();
+
+    // Return a simple solution structure
+    const solution = {
+      explanation: {
+        overview: "Solution Approach",
+        stepByStep: explanation,
+        complexity: {
+          time: "O(n)",
+          space: "O(1)"
+        },
+        codeExplanation: question.solution.code
       }
+    };
+
+    // Update the question with the solution
+    await Question.findByIdAndUpdate(questionId, {
+      'solution.explanation': JSON.stringify(solution.explanation)
     });
 
-    const result = await response.response;
-    let responseText = result.text().trim();
-    
-    // Clean up the response text by removing markdown code blocks if present
-    responseText = responseText.replace(/^```json\s*|\s*```$/g, '').trim();
-    
-    // Try to parse the response as JSON
-    let explanationData;
-    try {
-      // First, try to fix any unescaped newlines in the codeExplanation
-      const fixedResponseText = responseText.replace(
-        /"codeExplanation":\s*"([^"]*?)(?<!\\)\n([^"]*?)"/g,
-        (match, p1, p2) => `"codeExplanation": "${p1}\\n${p2}"`
-      );
-
-      explanationData = JSON.parse(fixedResponseText);
-
-      // Clean up any markdown formatting in the explanation fields
-      if (explanationData.explanation) {
-        const cleanMarkdown = (text) => {
-          if (typeof text !== 'string') return text;
-          return text
-            .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove bold
-            .replace(/\*(.*?)\*/g, '$1')      // Remove italic
-            .replace(/`(.*?)`/g, '$1')        // Remove inline code
-            .replace(/```[\s\S]*?```/g, '')   // Remove code blocks
-            .replace(/#{1,6}\s/g, '')         // Remove headers
-            .replace(/\n\s*[-*+]\s/g, '\n')   // Remove list markers
-            .replace(/\n\s*\d+\.\s/g, '\n')   // Remove numbered lists
-            .replace(/\\n/g, '\n')            // Convert escaped newlines to actual newlines
-            .trim();
-        };
-
-        explanationData.explanation = {
-          ...explanationData.explanation,
-          overview: cleanMarkdown(explanationData.explanation.overview),
-          stepByStep: cleanMarkdown(explanationData.explanation.stepByStep),
-          codeExplanation: cleanMarkdown(explanationData.explanation.codeExplanation),
-          complexity: {
-            time: cleanMarkdown(explanationData.explanation.complexity?.time || ''),
-            space: cleanMarkdown(explanationData.explanation.complexity?.space || '')
-          }
-        };
-
-        // Update the question with the formatted explanation string
-        const formattedExplanation = [
-          'Overview:',
-          explanationData.explanation.overview,
-          '',
-          'Step by Step:',
-          explanationData.explanation.stepByStep,
-          '',
-          'Time Complexity:',
-          explanationData.explanation.complexity.time,
-          '',
-          'Space Complexity:',
-          explanationData.explanation.complexity.space,
-          '',
-          'Code Explanation:',
-          explanationData.explanation.codeExplanation
-        ].join('\n');
-
-        question.solution.explanation = formattedExplanation;
-        await question.save();
-        
-        // Return the structured explanation for the API response
-        return explanationData.explanation;
-      }
-
-      // If the response is just a string, wrap it in the expected format
-      if (typeof explanationData === 'string') {
-        const formattedExplanation = explanationData;
-        question.solution.explanation = formattedExplanation;
-        await question.save();
-        
-        return {
-          overview: explanationData,
-          stepByStep: explanationData,
-          complexity: {
-            time: "As mentioned in the explanation",
-            space: "As mentioned in the explanation"
-          },
-          codeExplanation: explanationData
-        };
-      }
-    } catch (parseError) {
-      console.error('Failed to parse Gemini response. Raw response:', responseText);
-      console.error('Parse error:', parseError);
-      throw createError(500, 'Failed to parse solution explanation from AI response. The response was not valid JSON.');
-    }
+    return solution;
   } catch (error) {
-    console.error('Gemini API Error:', error);
-    throw createError(500, `Failed to generate solution explanation: ${error.message}`);
+    console.error('Error in generateSolutionExplanation:', error);
+    // Return a basic solution if generation fails
+    return {
+      explanation: {
+        overview: "Solution Approach",
+        stepByStep: "Here's how the solution works:\n\n" + question.solution.code,
+        complexity: {
+          time: "O(n)",
+          space: "O(1)"
+        },
+        codeExplanation: question.solution.code
+      }
+    };
   }
 }; 

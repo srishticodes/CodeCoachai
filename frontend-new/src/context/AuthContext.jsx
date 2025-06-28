@@ -6,7 +6,7 @@ const AuthContext = createContext();
 const initialState = {
   user: null,
   token: localStorage.getItem('token'),
-  loading: false,
+  loading: true,
   error: null
 };
 
@@ -35,12 +35,18 @@ export function AuthProvider({ children }) {
     const checkAuth = async () => {
       if (state.token) {
         try {
-          const user = await authApi.getCurrentUser();
-          dispatch({ type: 'SET_USER', payload: user });
+          dispatch({ type: 'SET_LOADING', payload: true });
+          const response = await authApi.getCurrentUser();
+          dispatch({ type: 'SET_USER', payload: response.user });
         } catch (error) {
           console.error('Auth check failed:', error);
+          localStorage.removeItem('token');
           dispatch({ type: 'LOGOUT' });
+        } finally {
+          dispatch({ type: 'SET_LOADING', payload: false });
         }
+      } else {
+        dispatch({ type: 'SET_LOADING', payload: false });
       }
     };
 
